@@ -1,4 +1,4 @@
-Hi all this is a small task management app to maintain tasks and is written in kotlin.
+Hi all this is a small task management app to maintain tasks.
 
 Following are the features:
 
