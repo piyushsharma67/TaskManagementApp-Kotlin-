@@ -8,7 +8,7 @@ Following are the features:
 Upcoming features:
 
 1.Schedule tasks.
-2.Alerts 10 mins before the task when it is scheduled.
+2.Alerts 10 mins before the time when it is scheduled.
 
 
 Flow of the APP is as follows:
