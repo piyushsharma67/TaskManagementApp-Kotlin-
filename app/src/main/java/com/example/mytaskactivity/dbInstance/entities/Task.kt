@@ -16,6 +16,7 @@ data class Task(
     @PrimaryKey(autoGenerate = true)
     val id:Int?,
     val task:String,
+    val time:String
 //    @Embedded
 //    val createdAt:LocalDateTime= LocalDateTime.now()
 )

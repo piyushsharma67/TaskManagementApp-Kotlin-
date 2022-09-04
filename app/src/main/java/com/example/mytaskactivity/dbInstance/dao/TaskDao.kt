@@ -16,5 +16,8 @@ interface TaskDao {
     @Query("SELECT * FROM tasks")
     fun getAllTasks() : Flow<List<Task>>
 
+    @Insert
+    fun saveTask(task:Task)
+
 
 }
