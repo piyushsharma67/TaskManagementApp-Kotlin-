@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mytaskactivity.MainApplicationClass
 import com.example.mytaskactivity.R
 import com.example.mytaskactivity.databinding.FragmentHomeBinding
+import com.example.mytaskactivity.dbInstance.entities.Task
+
 import com.example.mytaskactivity.listAdapter.TaskListAdapter
 import com.example.mytaskactivity.mainActivityViewModel.MainActivityViewModel
 import com.example.mytaskactivity.mainActivityViewModel.MainActivityViewModelFactory
@@ -27,7 +28,7 @@ class HomeFragment : Fragment() {
 
     lateinit var repository: TaskRepository
     lateinit var viewModel: MainActivityViewModel
-    lateinit var _binding:FragmentHomeBinding
+    lateinit var _binding: FragmentHomeBinding
 
 
     override fun onCreateView(
@@ -43,26 +44,30 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding.button.setOnClickListener {
-             val task=_binding.editTextTextMultiLine.text.toString()
-            if(task==""){
-                Toast.makeText(context,"task cannot be empty",Toast.LENGTH_SHORT).show()
-            }else{
-                viewModel.savetaskDb(_binding.editTextTextMultiLine.text.toString())
-            }
 
-        }
 
         val adapter=TaskListAdapter()
-         lifecycle.coroutineScope.launch{
-             viewModel.fetchTasks().collect(){
-                 adapter.submitList(it)
-             }
-         }
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.fetchTasks().collect(){
+                    Log.d("task",it.toString())
+                    if(it.size==0){
+                        Log.d("task","i am called")
+                        adapter.submitList(listOf(Task(id = null, task = "no available task", time = "")))
+                    }else{
+                        adapter.submitList(it)
+                    }
+                }
+            }
+        }
 
         _binding.recyclerView.layoutManager=LinearLayoutManager(context)
         _binding.recyclerView.hasFixedSize()
         _binding.recyclerView.adapter=adapter
+
+        _binding.fab.setOnClickListener{
+            findNavController().navigate(R.id.action_homeFragment_to_addTaskFragment)
+        }
     }
 
 }

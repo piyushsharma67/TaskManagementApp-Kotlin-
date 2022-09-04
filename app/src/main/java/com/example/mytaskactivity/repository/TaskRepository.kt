@@ -1,6 +1,7 @@
 package com.example.mytaskactivity.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.mytaskactivity.dataClass.TaskDB
 import com.example.mytaskactivity.dbInstance.DbInstance
 import com.example.mytaskactivity.dbInstance.entities.Task
@@ -18,9 +19,16 @@ class TaskRepository(val dbInstance: DbInstance) {
         return tasks
     }
 
-    fun saveTask(task:String){
+//    fun saveTask(task:String){
+//       CoroutineScope(Dispatchers.IO).launch {
+//           dbInstance.taskDao().insertTask(Task(task=task,id=null))
+//       }
+//    }
+
+    fun saveTaskWithTime(task:String,time:String){
        CoroutineScope(Dispatchers.IO).launch {
-           dbInstance.taskDao().insertTask(Task(task=task,id=null))
+           Log.d("notify",task)
+           dbInstance.taskDao().saveTask(Task(task=task,time=time,id=null))
        }
     }
 }

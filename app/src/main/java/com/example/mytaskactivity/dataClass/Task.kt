@@ -1,3 +1,3 @@
 package com.example.mytaskactivity.dataClass
 
-data class TaskDB(val task:String)
+data class TaskDB(val task:String,val time:String)
